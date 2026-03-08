@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOMAIN_NAME: 'borrowbot.kibalabs.com'
-      DOCKER_IMAGE: ghcr.io/${{ github.repository }}-app-prod:latest
+      DOCKER_IMAGE: ghcr.io/jasong-03/borrowbot-app-prod:latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
