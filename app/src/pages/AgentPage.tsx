@@ -11,6 +11,7 @@ import { ClosePositionDialog } from '../components/ClosePositionDialog';
 import { DepositDialog } from '../components/DepositDialog';
 import { DepositUsdcDialog } from '../components/DepositUsdcDialog';
 import { FloatingChat } from '../components/FloatingChat';
+import { ChainlinkRiskPanel } from '../components/ChainlinkRiskPanel';
 import { PositionDashboard } from '../components/PositionDashboard';
 import { WithdrawDialog } from '../components/WithdrawDialog';
 import { useGlobals } from '../GlobalsContext';
@@ -281,6 +282,10 @@ export function AgentPage(): React.ReactElement {
         isRefreshing={isRefreshing}
         latestCriticalMessage={latestCriticalMessage}
       />
+
+      <Box maxWidth='600px' isFullWidth={true} style={{ marginTop: '16px' }}>
+        <ChainlinkRiskPanel />
+      </Box>
 
       <Box maxWidth='600px' isFullWidth={true} style={{ marginTop: '32px' }}>
         <AgentTerminal

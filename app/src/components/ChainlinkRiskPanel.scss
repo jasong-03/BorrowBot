@@ -1,0 +1,77 @@
+.chainlinkRiskPanel {
+  border: 1px solid #375bd2 !important;
+  background: linear-gradient(135deg, rgba(55, 91, 210, 0.05), rgba(55, 91, 210, 0.02)) !important;
+
+  .chainlinkBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(55, 91, 210, 0.15);
+    color: #375bd2;
+  }
+
+  .riskLevelDisplay {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    .riskIndicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 20px;
+      border-radius: 8px;
+      min-width: 120px;
+
+      .riskLabel {
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .confidenceBar {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .confidenceTrack {
+        width: 100%;
+        height: 6px;
+        background: var(--box-border-color, #333);
+        border-radius: 3px;
+        overflow: hidden;
+
+        .confidenceFill {
+          height: 100%;
+          background: #375bd2;
+          border-radius: 3px;
+          transition: width 0.3s ease;
+        }
+      }
+    }
+  }
+
+  .riskMetrics {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .metricRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lastAssessed {
+      padding-top: 8px;
+      border-top: 1px solid var(--box-border-color, #333);
+      margin-top: 4px;
+    }
+  }
+}
