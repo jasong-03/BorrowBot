@@ -1839,3 +1839,65 @@ class AgentManager(Authorizer):  # Core manager
             last_action=None,
             last_check=None,
         )
+
+    async def get_cre_position_data(self) -> dict:
+        """Public endpoint for Chainlink CRE workflow to fetch aggregate position data."""
+        agents = await self.databaseStore.get_all_agents()
+        if not agents:
+            return {
+                'agentId': 'none',
+                'collateralValueUsd': 0.0,
+                'borrowValueUsd': 0.0,
+                'vaultBalanceUsd': 0.0,
+                'currentLtvBps': 0,
+                'targetLtvBps': 7000,
+                'maxLtvBps': 8500,
+                'yieldApyBps': 0,
+                'borrowAprBps': 0,
+            }
+        agent = agents[0]
+        dbPosition = await self.databaseStore.get_position_by_agent(agentId=agent.agentId)
+        if dbPosition is None:
+            return {
+                'agentId': agent.agentId,
+                'collateralValueUsd': 0.0,
+                'borrowValueUsd': 0.0,
+                'vaultBalanceUsd': 0.0,
+                'currentLtvBps': 0,
+                'targetLtvBps': 7000,
+                'maxLtvBps': 8500,
+                'yieldApyBps': 0,
+                'borrowAprBps': 0,
+            }
+        collateral = next((c for c in SUPPORTED_COLLATERALS if c.address.lower() == dbPosition.collateralAsset.lower()), SUPPORTED_COLLATERALS[0])
+        onchainCollateral, onchainBorrow, _borrowShares = await self._get_onchain_position(
+            agentWalletAddress=agent.walletAddress,
+            morphoMarketId=dbPosition.morphoMarketId,
+        )
+        _vaultShares, vaultAssets = await self._get_actual_vault_balance(agentWalletAddress=agent.walletAddress)
+        collateralAmountHuman = onchainCollateral / (10**collateral.decimals)
+        borrowAmountHuman = onchainBorrow / (10**6)
+        vaultAmountHuman = vaultAssets / (10**6)
+        try:
+            priceUsd = await self._get_asset_price(assetAddress=dbPosition.collateralAsset)
+        except Exception:  # noqa: BLE001
+            priceUsd = 0.0
+        collateralValueUsd = collateralAmountHuman * priceUsd
+        currentLtvBps = int((borrowAmountHuman / collateralValueUsd) * 10000) if collateralValueUsd > 0 else 0
+        targetLtvBps = int(dbPosition.targetLtv * 10000) if dbPosition.targetLtv else 7000
+        market = await self.morphoClient.get_market(chain_id=self.chainId, collateral_address=dbPosition.collateralAsset, loan_address=None)
+        maxLtvBps = int(market.lltv * 10000) if market else 8500
+        borrowAprBps = int(market.borrow_apy * 10000) if market else 0
+        yieldApy = await self.fortyAcresClient.get_yield_apy(chainId=self.chainId)
+        yieldApyBps = int(yieldApy * 10000) if yieldApy else 0
+        return {
+            'agentId': agent.agentId,
+            'collateralValueUsd': round(collateralValueUsd, 2),
+            'borrowValueUsd': round(borrowAmountHuman, 2),
+            'vaultBalanceUsd': round(vaultAmountHuman, 2),
+            'currentLtvBps': currentLtvBps,
+            'targetLtvBps': targetLtvBps,
+            'maxLtvBps': maxLtvBps,
+            'yieldApyBps': yieldApyBps,
+            'borrowAprBps': borrowAprBps,
+        }

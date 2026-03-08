@@ -324,6 +324,11 @@ def create_v1_routes(agentManager: AgentManager) -> list[Route]:
         constitution = await agentManager.get_agent_ens_constitution(agent_id=agentId)
         return endpoints.GetAgentEnsConstitutionResponse(constitution=constitution)
 
+    @json_route(requestType=endpoints.GetCrePositionDataRequest, responseType=endpoints.GetCrePositionDataResponse)
+    async def get_cre_position_data(request: KibaApiRequest[endpoints.GetCrePositionDataRequest]) -> endpoints.GetCrePositionDataResponse:
+        positionData = await agentManager.get_cre_position_data()
+        return endpoints.GetCrePositionDataResponse(**positionData)
+
     return [
         Route('/v1/collaterals', endpoint=get_supported_collaterals, methods=['GET']),
         Route('/v1/market-data', endpoint=get_market_data, methods=['GET']),
@@ -356,4 +361,5 @@ def create_v1_routes(agentManager: AgentManager) -> list[Route]:
         Route('/v1/agents/{agentId:str}/position', endpoint=get_agent_position, methods=['GET']),
         Route('/v1/agents/{agentId:str}/wallet', endpoint=get_agent_wallet, methods=['GET']),
         Route('/v1/agents/{agentId:str}/ens-constitution', endpoint=get_agent_ens_constitution, methods=['GET']),
+        Route('/v1/cre/position-data', endpoint=get_cre_position_data, methods=['GET']),
     ]

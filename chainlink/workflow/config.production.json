@@ -1,0 +1,14 @@
+{
+  "schedule": "0 */5 * * * *",
+  "geminiModel": "gemini-2.0-flash",
+  "borrowbotApiUrl": "https://borrowbot-api.kibalabs.com",
+  "priceApiUrl": "https://api.coingecko.com/api/v3/simple/price",
+  "evms": [
+    {
+      "riskOracleAddress": "",
+      "executorAddress": "",
+      "chainSelectorName": "ethereum-testnet-sepolia",
+      "gasLimit": "500000"
+    }
+  ]
+}

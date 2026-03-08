@@ -302,3 +302,19 @@ class GetAgentEnsConstitutionRequest(BaseModel):
 
 class GetAgentEnsConstitutionResponse(BaseModel):
     constitution: resources.EnsConstitutionResource
+
+
+class GetCrePositionDataRequest(BaseModel):
+    pass
+
+
+class GetCrePositionDataResponse(BaseModel):
+    agentId: str
+    collateralValueUsd: float
+    borrowValueUsd: float
+    vaultBalanceUsd: float
+    currentLtvBps: int
+    targetLtvBps: int
+    maxLtvBps: int
+    yieldApyBps: int
+    borrowAprBps: int
