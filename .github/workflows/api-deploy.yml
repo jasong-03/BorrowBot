@@ -10,7 +10,7 @@ jobs:
   api-deploy:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE: ghcr.io/${{ github.repository }}-api:latest
+      DOCKER_IMAGE: ghcr.io/jasong-03/borrowbot-api:latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
     env:
       NAME: borrowbot-api
       VERSION: ${{ github.sha }}
-      DOCKER_IMAGE: ghcr.io/${{ github.repository }}-api:latest
+      DOCKER_IMAGE: ghcr.io/jasong-03/borrowbot-api:latest
     steps:
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master
@@ -69,7 +69,7 @@ jobs:
     env:
       NAME: borrowbot-worker
       VERSION: ${{ github.sha }}
-      DOCKER_IMAGE: ghcr.io/${{ github.repository }}-api:latest
+      DOCKER_IMAGE: ghcr.io/jasong-03/borrowbot-api:latest
     steps:
       - name: executing remote ssh commands
         uses: appleboy/ssh-action@master

@@ -1,12 +1,12 @@
 {
   "schedule": "0 */5 * * * *",
-  "geminiModel": "gemini-2.0-flash",
+  "geminiModel": "gemini-2.5-flash",
   "borrowbotApiUrl": "https://borrowbot-api.kibalabs.com",
   "priceApiUrl": "https://api.coingecko.com/api/v3/simple/price",
   "evms": [
     {
-      "riskOracleAddress": "",
-      "executorAddress": "",
+      "riskOracleAddress": "0x91051e8b35280D54Dbfa2e817E1edA4724572C14",
+      "executorAddress": "0x9d53935896a4182676a02863F152bf0c2fc6987C",
       "chainSelectorName": "ethereum-testnet-sepolia",
       "gasLimit": "500000"
     }
